@@ -1,182 +1,155 @@
-<!DOCTYPE html>
 <html>
-<head>
-    <title>Influenza Cases in New York</title>
+
+  <head>
+    <!-- Import Pure CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
     <!-- Import vega-embed -->
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-    <!-- Import pure.css -->
-    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Google font -->
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
 
-    <!-- custom style-->
     <style>
-        *{
-            font-family: 'Open Sans', sans-serif;
-        }
-        h1{
-            font-size: 2.5em;
-            font-family: 'Merriweather', serif;
-            color: red;
-        }
-        h2{
-            font-family: 'Merriweather', serif;
-        }
-        h3{
-            font-weight: bold;
-        }
-        p{
-            font-size: 0.9em;
-        }
-        body{
-            background-color: lightgrey;
-        }
-        .page{
-            width: 850px;
-            height: auto;
-            background-color: white;   
-            margin: auto;
-            padding: 50px;
-            padding-top: 35px;
-        }
-        .vis-container{
-            width: 100%;
-        }
-        .description h2, h1{
-            margin-top:0px;
-        }
-        .description-right {
-            padding-left: 20px;
-        }
-        .description-left{
-            padding-right: 20px;
-        }
-        .pure-g{
-            margin-bottom: 25px;
-        }
-        .small-font{
-            font-size: 12px;
-        }
-        .sub-heading{
-            font-size: 0.875em;
-            color: 	#666666;
-        }
-        .light_green_text{
-            color: #93c4aa;
-        }
-        .peach_text{
-            color: #f78a64;
-        }
+      body {
+        background-color: white;
+      }
+
+      .page {
+        width: auto;
+        height: auto;
+        justify-content: center;
+      }
+
+      .vertical-paragraph{
+        padding-left: 40px;
+        padding-right: 40px;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        font-size: 22px;
+      }
+
+      .horizontal-paragraph{
+        padding-left: 0px;
+        padding-right: 20px;
+        padding-top: 0px;
+        padding-bottom: 60px;
+        font-size: 22px;
+      }
+
+      .good-highlight{
+        font-size: 25px;
+        color:#3399FF;
+      }
+
+      .bad-highlight{
+        font-size: 25px;
+        color:#FF3300;
+      }
+
+      .exaggerate-highlight{
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .first-place-highlight{
+        font-size: 28px;
+        color: #E6C100;
+      }
+
+      .second-place-highlight{
+        font-size: 28px;
+        color: #A6A6A6;
+      }
+
     </style>
-</head>
-<body>
+  </head>
 
+  <header style="text-decoration: underline">
+    <h1>Data Analyst Job Posting from Glassdoor</h1>
+  </header>
+
+  <body>
     <div class="page">
-
-        <!-- pure grid group -->
-        <!-- Heading -->
-        <div class="pure-g">
-            <div class="pure-u-1-2">
-                <h1>Influenza Cases in New York</h1>
-            </div>
-            <div class="pure-u-1">
-                <div class="sub-heading">
-                    New York is a Northeastern state of the United States of America(USA or simply just US). 
-                    Being one of the original thirteen colonies that formed the United States, it is the forth 
-                    most populous state in the US, and is also home to New York City, the most populous city in the US. 
-                    Often described as the cultural, financial and media capital of the world, the state borders New Jersey, Pennsylvania,
-                    Connecticut, Massachusetts, Vermont, and Canadian Provinces of Quebec and Ontario.
-                </div>
-            </div>
-        </div>
-
-        <!-- pure grid group -->
-        <div class="pure-g">
-            <div class="pure-u-1">
-                <div id="choropleth" class="vis-container"></div>
-            </div>
-        </div>
-
-
-        <!-- pure grid group -->
-        <div class="pure-g">
-            <div class="pure-u-1-4">
-                <div class="description-left">
-                    <h2>Counties and Regions in new york state</h2>
-                    <p>There are in total 62 counties covering 5 regions, which are New York City, Capital District, Central New York, New York Metropolitan Area,
-                        and Western New York. the least populous county houses between 4600 to 4800 residents, while the most populous county houses a little over 2.5 
-                        million residents. The state also has the most populous city and region, as well as the Headquarters of the United Nations, New York City.
-                    </p>
-                </div>
-            </div>
-            <div class="pure-u-3-4">
-                <div id="dotgraph"  class="vis-container"></div>
-            </div>
-        </div>
-
-          <!-- pure grid group -->
-          <div class="pure-g">
-              <div class="pure-u-2-3">
-                <div id="streamgraph"  class="vis-container"></div>
-              </div>
-              <div class="pure-u-1-3">
-                <div class="description description-right">
-                  <h2>Cases Between Seasons</h2>
-                  <p>
-                      We can see from here that the influenza season of 2011-2012 was the lowest. It was also at the time the lowest and shortest recorded
-                      peak for influenza like illnesses (ILI). This was due to the season begining late and was mild compared to most previous seasons.
-                      ILIs only peaked during mid-March, and ILIs reached the baseline for only 1 week during the season.
-                  </p>
-                </div>
-              </div>
-
+      <div class="pure-g">
+        <div class="pure-u-1-5">
+          <div class="vertical-paragraph">
+              <p>
+              The <span class="good-highlight">upper estimate of the salary</span> 
+              is averaged at around <span class="good-highlight">90,000 USD</span>, 
+              while the <span class="bad-highlight">lower end of the estimate</span>
+              is averaged at around <span class="bad-highlight">54,000 USD</span>, if we were to average
+              the 2 opposite end of the salary, we get an <span class="exaggerate-highlight"> average of
+              around 72,000 USD salary</span>. Note that the numbers are 
+              estimates from Glassdoor websites and also that it is
+              a yearly salary.
+              </p>
+              <p> 
+              As the rating increases, the appearance of higher
+              pay salary starts to appear. Most of the highest
+              estimated paid salary from the posting seem to 
+              originate mostly from 4 to 5 points rated job posting.
+              </p>
           </div>
-
-        <!-- pure grid group -->
-        <div class="pure-g">
-            <div class="pure-u-1-3">
-                <div class="description-left">
-                    <h2>Ratio of Infected and Healthy population</h2>
-                    <p>
-                        In general, none of the seasons in the dataset ever reach more than 25% total population infected except one outlier which was the 2017-2018 season.
-                        The 2017-2018 season had roughly 40% of the state's population being infected by the influenza.
-                    </p>
-                </div>
-            </div>
-            <div class="pure-u-2-3">
-                <div id="donutchart" class="vis-container"></div>
-            </div>
         </div>
-        
+        <div class="pure-u-4-5">
+          <div id="bubble" class="vis-grid" style=></div>
+        </div>
+      </div>
 
-    </div> <!-- end page -->
+      <div class="pure-g">
+        <div class="pure-u-1-5"></div>
+        <div class="pure-u-3-5">
+          <div class="horizontal-paragraph">
+            <p>
+            From the data, it seems that most 5 points rated job posting originates from companies of
+            around the <span class="first-place-highlight">size of 51 to 200</span>, which is around 
+            <span class="first-place-highlight">71%</span> of the 5 points rated job postings, 
+            2nd most comes from companies of the size of <span class="second-place-highlight">1 to 50 employees</span>,
+            which consist of <span class="second-place-highlight">26%</span> of the 5 point rated job posting
+            Further investigation could be made to find out the ages of the companies, which is sadly not included in this analysis.
+            </p>
+          </div>
+        </div>
+        <div class="pure-u-1-5"></div>
+      </div>
 
-    <!-- Start of script -->
+      <div class="pure-g">
+        <div class="pure-u-1-3">
+          <div id="map"></div>
+        </div>
+        <div class="pure-u-1-3">
+          <div id="pie"></div>
+        </div>
+        <div class="pure-u-1-3">
+          <div id="word"></div>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript">
-        var specVis1 = "js/InfluenzaChoropleth.vg.json";
-        var specVis2 = "js/InfluenzaDot.vg.json";
-        var specVis3 = "js/Influenza_Streamgraph.vl.json";
-        var specVis4 = "js/SeasonDonut.vl.json";
+      var spec = "https://raw.githubusercontent.com/sozonokishi/FIT3179/main/Assignment2_idioms/part1_map_jobcount.json";
+      vegaEmbed('#map', spec).then(function(result) {
+        // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+      }).catch(console.error);
 
-        vegaEmbed('#choropleth', specVis1, {"actions": false}).then(function(result) {
-            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-        }).catch(console.error);
-        
-        vegaEmbed('#dotgraph', specVis2, {"actions": false}).then(function(result) {
-            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-        }).catch(console.error);
+      var spec2 = "https://raw.githubusercontent.com/sozonokishi/FIT3179/main/Assignment2_idioms/part2_bubbleplot_jobpost.json";
+      vegaEmbed('#bubble', spec2).then(function(result) {
+        // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+      }).catch(console.error);
 
-        vegaEmbed('#streamgraph', specVis3, {"actions": false}).then(function(result) {
-            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-        }).catch(console.error);
+      var spec3 = "https://raw.githubusercontent.com/sozonokishi/FIT3179/main/Assignment2_idioms/part3_piechart_top5sector_industry.json";
+      vegaEmbed('#pie', spec3).then(function(result) {
+        // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+      }).catch(console.error);
 
-        vegaEmbed('#donutchart', specVis4, {"actions": false}).then(function(result) {
-            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-        }).catch(console.error);
+      var spec4 = "https://raw.githubusercontent.com/sozonokishi/FIT3179/main/Assignment2_idioms/part4_wordcloud_jobtitle.json";
+      vegaEmbed('#word', spec4).then(function(result) {
+        // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+      }).catch(console.error);
+
     </script>
-</body>
+  </body>
+
 </html>
+
